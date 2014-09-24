@@ -27,20 +27,20 @@
 #include <ros/ros.h>
 #include <sensor_msgs/image_encodings.h>
 
-#define NODE_NAME  "image_processor"
+#define NODE_NAME  "bgsnode"
 
-class ImageProcessor
+class BackgroundModeller
 {
 public:
-  ImageProcessor(void) : m_imgTransport(m_nodeHandle)
+  BackgroundModeller(void) : m_imgTransport(m_nodeHandle)
   {
     m_imgSubscriber = m_imgTransport.subscribe("/v4l/camera/image_raw", 1,
-      &ImageProcessor::imageCb, this, image_transport::TransportHints("compressed"));
+      &BackgroundModeller::ReceiveImage, this, image_transport::TransportHints("compressed"));
 
     m_imgPublisher = m_imgTransport.advertise("/image_processor/output_video", 1);
   }
 
-  void imageCb(const sensor_msgs::ImageConstPtr& msg)
+  void ReceiveImage(const sensor_msgs::ImageConstPtr& msg)
   {
     cv_bridge::CvImagePtr cv_ptr;
     try
@@ -71,7 +71,7 @@ private:
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, NODE_NAME);
-  ImageProcessor imageProcessor;
+  BackgroundModeller BackgroundModeller;
   ros::spin();
   return 0;
 }

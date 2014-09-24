@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(motion_detector)
+project(bgsnode)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -105,14 +105,14 @@ include_directories(
 # )
 
 ## Declare a cpp executable
-add_executable(subscriber src/subscriber.cpp)
+add_executable(bgsnode src/bgsnode.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
 # add_dependencies(motion_detector_node motion_detector_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(subscriber
+target_link_libraries(bgsnode
   ${catkin_LIBRARIES}
 )
 
