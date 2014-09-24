@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+#include "package_bgs/FrameDifferenceBGS.h"
+
 #include <cv_bridge/cv_bridge.h>
 #include <image_transport/image_transport.h>
 #include <image_transport/transport_hints.h>
@@ -32,12 +34,19 @@
 class BackgroundModeller
 {
 public:
-  BackgroundModeller(void) : m_imgTransport(m_nodeHandle)
+  BackgroundModeller(void)
+   : m_imgTransport(m_nodeHandle),
+     m_bgsPackage(new FrameDifferenceBGS)
   {
     m_imgSubscriber = m_imgTransport.subscribe("/v4l/camera/image_raw", 1,
       &BackgroundModeller::ReceiveImage, this, image_transport::TransportHints("compressed"));
 
     m_imgPublisher = m_imgTransport.advertise("/image_processor/output_video", 1);
+  }
+
+  ~BackgroundModeller(void)
+  {
+    delete m_bgsPackage;
   }
 
   void ReceiveImage(const sensor_msgs::ImageConstPtr& msg)
@@ -53,6 +62,10 @@ public:
       return;
     }
 
+    cv::Mat img_mask;
+    cv::Mat img_bkgmodel;
+    m_bgsPackage->process(cv_ptr->image, img_mask, img_bkgmodel);
+
     // Draw an example circle on the video stream
     if (cv_ptr->image.rows > 60 && cv_ptr->image.cols > 60)
       cv::circle(cv_ptr->image, cv::Point(50, 50), 10, CV_RGB(255 ,0, 0));
@@ -66,6 +79,7 @@ private:
   image_transport::ImageTransport m_imgTransport;
   image_transport::Subscriber m_imgSubscriber;
   image_transport::Publisher m_imgPublisher;
+  IBGS* m_bgsPackage;
 };
 
 int main(int argc, char **argv)
