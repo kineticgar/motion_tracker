@@ -6,12 +6,13 @@ add_subdirectory(lib/bgslibrary)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+set(MSG_DEP_SET std_msgs sensor_msgs)
+
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
   roscpp
-  sensor_msgs
-  std_msgs
+  ${MSG_DEP_SET}
 )
 
 ## System dependencies are found with CMake's conventions
