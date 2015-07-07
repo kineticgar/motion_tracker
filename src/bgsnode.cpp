@@ -92,7 +92,7 @@ class BackgroundModeller
 public:
   BackgroundModeller(void)
    : m_imgTransport(m_nodeHandle),
-     m_bgsPackage(new SigmaDeltaBGS)
+     m_bgsPackage(new AdaptiveSelectiveBackgroundLearning)
   {
     m_imgSubscriber = m_imgTransport.subscribe("/v4l/camera/image_raw", 1,
       &BackgroundModeller::ReceiveImage, this, image_transport::TransportHints("compressed"));
