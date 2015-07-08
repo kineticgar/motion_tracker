@@ -94,13 +94,15 @@ class BackgroundModeller
 public:
   BackgroundModeller(void)
    : m_imgTransport(m_nodeHandle),
-     m_bgsPackage(new AdaptiveSelectiveBackgroundLearning)
+     m_bgsPackage(NULL)
   {
-    m_imgSubscriber = m_imgTransport.subscribe("camera/image_raw", 1,
+    m_bgsPackage = new AdaptiveSelectiveBackgroundLearning;
+
+    m_imgSubscriber = m_imgTransport.subscribe("image_raw", 1,
       &BackgroundModeller::ReceiveImage, this, image_transport::TransportHints("compressed"));
 
-    m_imgPublisherForeground = m_imgTransport.advertise("camera/foreground", 1);
-    m_imgPublisherBackground = m_imgTransport.advertise("camera/background", 1);
+    m_imgPublisherForeground = m_imgTransport.advertise("foreground", 1);
+    m_imgPublisherBackground = m_imgTransport.advertise("background", 1);
   }
 
   ~BackgroundModeller(void)
