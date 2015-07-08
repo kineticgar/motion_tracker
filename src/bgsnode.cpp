@@ -94,11 +94,11 @@ public:
    : m_imgTransport(m_nodeHandle),
      m_bgsPackage(new AdaptiveSelectiveBackgroundLearning)
   {
-    m_imgSubscriber = m_imgTransport.subscribe("/v4l/camera/image_raw", 1,
+    m_imgSubscriber = m_imgTransport.subscribe("camera/image_raw", 1,
       &BackgroundModeller::ReceiveImage, this, image_transport::TransportHints("compressed"));
 
-    m_imgPublisherForeground = m_imgTransport.advertise("/bgs/foreground", 1);
-    m_imgPublisherBackground = m_imgTransport.advertise("/bgs/background", 1);
+    m_imgPublisherForeground = m_imgTransport.advertise("camera/foreground", 1);
+    m_imgPublisherBackground = m_imgTransport.advertise("camera/background", 1);
   }
 
   ~BackgroundModeller(void)
@@ -149,7 +149,7 @@ private:
   IBGS* m_bgsPackage;
 };
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   ros::init(argc, argv, NODE_NAME);
   BackgroundModeller BackgroundModeller;
