@@ -127,20 +127,17 @@ public:
     cv::Mat img_bkgmodel;
     m_bgsPackage->process(cv_ptr->image, img_mask, img_bkgmodel);
 
+    if (!img_bkgmodel.empty())
+    {
+      img_bkgmodel.copyTo(cv_ptr->image);
+      m_imgPublisherBackground.publish(cv_ptr->toImageMsg());
+    }
+
     if (!img_mask.empty())
     {
-      if (!img_bkgmodel.empty())
-      {
-        img_bkgmodel.copyTo(cv_ptr->image);
-        m_imgPublisherBackground.publish(cv_ptr->toImageMsg());
-      }
-
-      if (!img_mask.empty())
-      {
-        img_mask.copyTo(cv_ptr->image);
-        cv_ptr->encoding = "mono8";
-        m_imgPublisherForeground.publish(cv_ptr->toImageMsg());
-      }
+      img_mask.copyTo(cv_ptr->image);
+      cv_ptr->encoding = "mono8";
+      m_imgPublisherForeground.publish(cv_ptr->toImageMsg());
     }
   }
 
