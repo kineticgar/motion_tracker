@@ -71,6 +71,8 @@
 #include <ros/ros.h>
 #include <sensor_msgs/image_encodings.h>
 
+#include <unistd.h>
+
 #define NODE_NAME  "bgsnode"
 
 // MixtureOfGaussianV2BGS
@@ -152,6 +154,10 @@ private:
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, NODE_NAME);
+
+  if (argc >= 2)
+    chdir(argv[1]);
+
   BackgroundModeller BackgroundModeller;
   ros::spin();
   return 0;
