@@ -73,7 +73,7 @@
 
 #include <unistd.h>
 
-#define NODE_NAME  "bgsnode"
+#define NODE_NAME  "background_subtractor"
 
 // MixtureOfGaussianV2BGS
 // AdaptiveBackgroundLearning
