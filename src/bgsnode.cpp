@@ -68,6 +68,7 @@
 #include <image_transport/image_transport.h>
 #include <image_transport/transport_hints.h>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <ros/package.h>
 #include <ros/ros.h>
 #include <sensor_msgs/image_encodings.h>
 
@@ -154,8 +155,8 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, NODE_NAME);
 
-  if (argc >= 2)
-    chdir(argv[1]);
+  std::string strPath = ros::package::getPath("motion_tracker");
+  chdir(strPath.c_str());
 
   BackgroundModeller BackgroundModeller;
   ros::spin();
